@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+	<p>LyouJS</p>
+
+	<p id="demo"></p>
+
+	<script>
+		var x = document.getElementById("demo");
+
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else {
+				x.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}
+
+		function showPosition(position) {
+			if(position){
+				var data = {lat: position.coords.latitude, long: position.coords.longitude, accuracy: position.coords.accuracy, timestamp: position.timestamp}
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '/location', true);
+				xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+				// send the collected data as JSON
+				console.log(position)
+				xhr.send(JSON.stringify({data: data}));
+
+				xhr.onloadend = function () {
+					// done
+				};
+			}
+		}
+
+		getLocation()
+	</script>
+
+</body>
+
+</html>
